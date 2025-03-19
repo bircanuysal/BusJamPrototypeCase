@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50b22e321082df24e8c2943b67c92f57, type: 3}
+  m_Name: NewLevelEditorDatas
+  m_EditorClassIdentifier: 
+  sticmanSpawnerSprite: {fileID: 21300000, guid: f0aad5312c48ce1458146b08d01cfa0f,
+    type: 3}
+  whiteStickman: {fileID: 2100000, guid: 11cc10daca40ce14e987c8a9d4036e81, type: 2}
+  redStickman: {fileID: 2100000, guid: f040996ac698e804bb0d46f06b001f95, type: 2}
+  greenStick: {fileID: 2100000, guid: 79ec7acbc12f7cd478139fdc1cc7efb4, type: 2}
+  blueStickman: {fileID: 2100000, guid: 089212e54d25d974aa47f75709a307a6, type: 2}
+  yellowStickman: {fileID: 2100000, guid: 36c647796ced999499f70c81dd365d6b, type: 2}
+  purpleStickman: {fileID: 2100000, guid: 14bda629f58908649ac8ab0c63a1f691, type: 2}
