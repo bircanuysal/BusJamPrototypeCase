@@ -1,0 +1,65 @@
+## Level Editor Kullanım Kılavuzu(Burayi okuyarak level editor ekranini kullaniniz)
+
+Bu dosya, oyunu incelerken kolaylik sağlamasi adina aciklamalar icermektedir.
+
+### **Level Editor Penceresi**
+1. **BusQueue:**
+   - Oyun icinde gelecek olan otobuslerin renkleri ve siralamasini buradan degistirebilirsiniz.
+2. **Otobus Kapasitesi:**
+   - Otobuslerdeki kapasiteyi ekledim ancak test ve geliştirme için zamanim kalmadigi icin simdilik devre disidir.
+3. **Level Süresi:**
+   - "Level Time" bolumunden seviyenin kac saniye surecegini belirleyebilirsiniz.
+4. **Grid Ayarları:**
+   - Satir ve sutun sayilarini burada belirleyebilirsiniz.
+5. **Edit Grid:**
+   - Gridleri duzenlemek icin bu butona tiklayin.
+
+---
+
+### **Grid Editor Penceresi**
+1. **Clear Grid:**
+   - Gridleri temizler. (Bazi "required color" hesaplamalarinda hata varsa, bu butonla duzeltebilirsiniz.)
+2. **Select Color:**
+   - Sahnedeki belirli gridlere hangi renkte stickman’lerin spawn olacagını secebilirsiniz.
+   - Eklenen ve eklenmesi gereken renk bilgileri acılan butonlarda gosterilir.
+   - Secilen renk ile gridleri boyayabilirsiniz (Tıklayarak veya surukleyerek).
+   - Sag tik ile secilen renkleri silebilirsiniz.
+3. **Obstacle:**
+   - Hangi gridlerin engel (obstacle) olacagini belirleyebilirsiniz.
+   - Calisma mantigi, renk boyama ile aynidir.
+4. **AutoFillGrid:**
+   - Sahneyi otomatik olarak gerekli renklerle doldurur.
+   - Kullanabilmek için öncelikle **Clear Grid** butonu ile sahneyi temizlemeniz gerekir.
+5. **Save:**
+   - Grid üzerindeki ayarlari kaydederek **Level Editor** ekranına donebilirsiniz.
+
+---
+
+### **Level Editor Penceresi (Geri Donuş)**
+- **Grid Onizleme:**
+   - Olusturulan gridler burada onizlenebilir.
+- **Sahneye Aktar:**
+   - Verileri sahneye aktarmak icin kullanilir.
+   - Bu butona basmadan once **LevelEditorScene** sahnesini acin ve diger sahne bilgilerinizi kaydettiginizden emin olun.
+- **Otobus Yolu ve Kamera Ayarlari:**
+   - Manuel olarak yapilmalidir. (Bu özellikleri Level Editor’e ekleyebilirdim fakat zamanim yetmedi.)
+- **Sahneyi Oluştur:**
+   - "LevelData" scriptable objesinin ismine göre bir sahne oluşturur.
+   - Bu sahneyi projeye ekleyerek oynayabilirsiniz.
+
+---
+
+### **Oyun Kayıt Sistemi**
+- **PlayerPrefs:**
+   - Oyun kayit sistemini **PlayerPrefs** ile yaptim. Fazla veri tutmayacagim icin yeterli olacaktir.
+   - Eger **Grid, Bus ve Stickman** verilerini saklamak istersek **JSON formatında** tutulabilir.
+- **PlayerPrefs’i temizleyerek oyuna Level 1’den başlayabilirsiniz.**
+
+---
+
+Projeye daha fazla ozellik ekleyebilecegimi duşunsem de, zaman kisitlamalari nedeniyle yetistiremedim. Bu nedenle bazi eksiklikler ve bug'lar olabilir. Bunları goz onunde bulundurarak degerlendireceginizi duşunuyorum.
+
+Umarım projemi begenirsiniz ve ekibiniz için faydali olabilecegimi dusunursunuz.
+
+Tesekkürler, iyi çalismalar. 🚀
+
