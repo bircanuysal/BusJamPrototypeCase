@@ -19,7 +19,6 @@ public class IdleState : StickmanState
 
     public override void EnterState()
     {
-        stickman.SetIsMovingBool(false); ;
         stickman.GetComponent<CharacterAnimatorController>().ChangeAnimationState(AnimationStates.Idle);
     }
 }
@@ -36,8 +35,9 @@ public class MoveToDecisionState : StickmanState
     private IEnumerator Move()
     {
         Transform decisionWall = GameManager.Instance.GetDecisionWall();
-        yield return stickman.StartCoroutine(stickman.MoveToTarget(decisionWall, 5f));
-        stickman.ChangeState(new IdleState(stickman));
+        stickman.SetTarget(decisionWall);
+        stickman.GetComponent<CharacterAnimatorController>().ChangeAnimationState(AnimationStates.Run);
+        yield return stickman.StartCoroutine(stickman.MoveToTarget(decisionWall, 5f));        
     }
 
 }
@@ -47,13 +47,15 @@ public class MoveToBusState : StickmanState
 
     public override void EnterState()
     {
-        stickman.StopAllCourutine();
+        //stickman.StopAllCourutine();
         stickman.StartCoroutine(Move());
     }
 
     private IEnumerator Move()
     {
         Transform busTransform = BusQueueManager.Instance.GetActiveBusTransform();
+        stickman.SetTarget(busTransform);
+        stickman.GetComponent<CharacterAnimatorController>().ChangeAnimationState(AnimationStates.Run);
         yield return stickman.StartCoroutine(stickman.MoveToTarget(busTransform, 5f, true));
         stickman.ChangeState(new IdleState(stickman));
     }
@@ -64,7 +66,7 @@ public class MoveToQueueState : StickmanState
 
     public override void EnterState()
     {
-        stickman.StopAllCourutine();
+        //stickman.StopAllCourutine();
         stickman.StartCoroutine(Move());
     }
 
@@ -75,6 +77,8 @@ public class MoveToQueueState : StickmanState
         {
             stickman.SetOnWaitingGridBool(true);
             stickman.SetOnWaitingGrid(grid);
+            stickman.SetTarget(grid.transform);
+            stickman.GetComponent<CharacterAnimatorController>().ChangeAnimationState(AnimationStates.Run);
             yield return stickman.StartCoroutine(stickman.MoveToTarget(grid.transform, 5f, true));
         }
         else

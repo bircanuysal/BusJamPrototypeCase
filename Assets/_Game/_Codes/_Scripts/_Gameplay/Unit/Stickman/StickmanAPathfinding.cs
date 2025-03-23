@@ -10,6 +10,7 @@ public class StickmanAPathfinding : MonoBehaviour
     private Dictionary<Vector2Int, GameObject> gridObjects;
     private Vector2Int currentGridPos;
     private Outline outline;
+    private Coroutine moveOnTheCoroutine;
 
     private void Start()
     {
@@ -25,6 +26,7 @@ public class StickmanAPathfinding : MonoBehaviour
     }
     private void OnDisable()
     {
+        DOTween.Kill(gameObject);
         EventManager.StickmanEvents.ControlOutline -= ControlOutline;
     }
     private void OnMouseDown()
@@ -64,7 +66,7 @@ public class StickmanAPathfinding : MonoBehaviour
 
         if (path.Count > 0)
         {
-            StartCoroutine(MoveOnPath(transform, path));
+            moveOnTheCoroutine = StartCoroutine(MoveOnPath(transform, path));
         }
     }
     private IEnumerator MoveOnPath(Transform stickman, List<Vector2Int> path)
@@ -78,7 +80,10 @@ public class StickmanAPathfinding : MonoBehaviour
         {
             Vector3 targetPos = gridObjects[gridPos].transform.position;
             Vector3 dir = (targetPos - transform.position).normalized;
-            transform.DORotateQuaternion(Quaternion.LookRotation(dir), .25f);
+            if (transform != null)
+            {
+                transform.DORotateQuaternion(Quaternion.LookRotation(dir), .25f);
+            }            
             while (Vector3.Distance(stickman.position, targetPos) > 0.1f)
             {
                 stickman.position = Vector3.MoveTowards(stickman.position, targetPos, Time.deltaTime * 9f);
@@ -92,7 +97,17 @@ public class StickmanAPathfinding : MonoBehaviour
 
         //SetGridBlocked(currentGridPos, true);
     }
-
+    public Coroutine GetMoveCoroutine()
+    {
+        return moveOnTheCoroutine;
+    }
+    public void StopMoveCourutine()
+    {
+        if (moveOnTheCoroutine != null)
+        {
+            StopCoroutine(moveOnTheCoroutine);
+        }
+    }
     private Vector2Int GetGridPosition(Vector3 worldPos)
     {
         foreach (var kvp in gridObjects)

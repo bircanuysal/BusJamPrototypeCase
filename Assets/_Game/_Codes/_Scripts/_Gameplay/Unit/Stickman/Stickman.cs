@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using DG.Tweening;
-using UnityEditor.Rendering;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -15,7 +14,7 @@ public class Stickman : Unit
 
     public WaitingGrid WaitingGrid { get; private set; }
 
-    private CharacterAnimatorController animatorController;
+    private CharacterAnimatorController AnimatorController;
 
     #region editorden aktif state gormek icin
     [SerializeField] private string debugState;
@@ -23,7 +22,7 @@ public class Stickman : Unit
     #endregion
 
     private void Awake(){
-        animatorController = GetComponent<CharacterAnimatorController>();
+        AnimatorController = GetComponent<CharacterAnimatorController>();
         if (stickmanRenderer == null){
             stickmanRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         }
@@ -42,6 +41,7 @@ public class Stickman : Unit
 
     }
     private void OnDisable(){
+        DOTween.Kill(gameObject);
         EventManager.StickmanEvents.MoveStarting -= SetMoving;
         EventManager.StickmanEvents.OnTargetReached -= MoveForDecision;
         EventManager.StickmanEvents.MoveToBus -= MoveToBus;
@@ -98,6 +98,7 @@ public class Stickman : Unit
     }
     private void MoveForDecision(int unitId){
         if (UnitID == unitId){
+            IsMoving = false;
             ChangeState(new MoveToDecisionState(this));
         }
     }
@@ -128,16 +129,28 @@ public class Stickman : Unit
         ChangeState(new SitBusState(this, _bus));
     }
     private void InterruptForMoveToWaitingGrid(int busId = 0){
-        StopAllCoroutines();
+        //StopAllCoroutines();        
         if (BusQueueManager.Instance.GetActiveBusColor() == UnitColor){
+
+            StickmanAPathfinding stickmanAPathfinding = GetComponent<StickmanAPathfinding>();
+            if (stickmanAPathfinding.GetMoveCoroutine() != null)
+            {
+                Debug.LogError("MoveToWaitingGrid durduruldu");
+                stickmanAPathfinding.StopMoveCourutine();
+            }
+
             ChangeState(new MoveToBusState(this));
         }
     }
     public void SetMoving(int id){
         if (UnitID == id){
             IsMoving = true;
-            animatorController.ChangeAnimationState(AnimationStates.Run);
         }
+    }
+    private Transform currentTarget;
+    public void SetTarget(Transform target)
+    {
+        currentTarget = target;
     }
     public IEnumerator MoveToTarget(Transform target, float speed, bool rotating = false){
         if (target == null){
@@ -154,7 +167,13 @@ public class Stickman : Unit
 
         EventManager.StickmanEvents.Moving(UnitID);
 
-        while (target != null && transform != null && Vector3.Distance(transform.position, target.position) > 0.1f){
+        while (target != null &&
+            transform != null && 
+            Vector3.Distance(transform.position, target.position) > 0.1f){
+            if (currentTarget.position != target.position)
+            {
+                yield break;
+            }
             if (rotating){
                 Vector3 direction = (target.position - transform.position).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
@@ -172,13 +191,13 @@ public class Stickman : Unit
 
             yield return null;
         }
-
-        transform.DORotateQuaternion(Quaternion.Euler(Vector3.zero), 0.5f).SetEase(Ease.OutQuad);
+        if (transform != null)
+        {
+            transform.DORotateQuaternion(Quaternion.Euler(Vector3.zero), 0.5f).SetEase(Ease.OutQuad);
+        }
+        
         IsMoving = false;
-        animatorController.ChangeAnimationState(AnimationStates.Idle);
-    }
-    public void SetIsMovingBool(bool moving){
-        IsMoving = moving;
+        AnimatorController.ChangeAnimationState(AnimationStates.Idle);
     }
     public void SetOnWaitingGridBool(bool wait){
         OnWaitingGrid = wait;
